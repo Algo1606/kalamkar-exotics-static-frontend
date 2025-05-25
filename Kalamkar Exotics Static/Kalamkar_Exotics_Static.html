@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="images/Kalamkar-Exotics-Logo-3.png" type="image/png">
+    <title>Kalamkar Exotics</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8fffe;
+        }
+
+        /* Navigation */
+        .navbar {
+            background: #8ecc1f;
+            padding: 0 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            cursor: pointer;
+
+            /* Button styling */
+            background-color: #6da30d; /* slightly darker green for contrast */
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            border: 1px solid transparent
+
+        }
+
+        .nav-links a:hover {
+            /*color: #90ee90;*/
+            background-color: #90ee90; /* light green on hover */
+            color: #333;
+            border-color: #6da30d;
+        }
+
+        /* Main Content */
+        .content {
+            margin-top: 80px;
+        }
+
+        .section {
+            display: none;
+            min-height: 80vh;
+            padding: 2rem 0;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            height: 60vh;
+            overflow: hidden;
+            border-radius: 15px;
+            margin: 2rem 0;
+        }
+
+        .carousel {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .carousel-item {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .carousel-item.active {
+            opacity: 1;
+        }
+
+        .carousel-item:nth-child(1) {
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1542838132-92c53300491e?w=1200&h=600&fit=crop') center/cover;
+        }
+
+        .carousel-item:nth-child(2) {
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('images/hero2.jpg') center/cover;
+        }
+
+        .carousel-item:nth-child(3) {
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('images/hero3.png') center/cover;
+        }
+
+        .hero-content {
+            text-align: center;
+            color: white;
+            z-index: 10;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .hero p {
+            font-size: 1.4rem;
+            margin-bottom: 2rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        .cta-button {
+            background: linear-gradient(45deg, #4CAF50, #66BB6A);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(76, 175, 80, 0.3);
+        }
+
+        /* Features Section */
+        .features {
+            padding: 4rem 0;
+            overflow: visible;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-20px);
+            box-shadow: 0 35px 35px rgba(0,0,0,0.15);
+        }
+
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(45deg, #4CAF50, #66BB6A);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 2rem;
+            color: white;
+        }
+
+        /* Farms Section */
+        .farms-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .farm-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .farm-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .farm-image {
+            width: 100%;
+            height: 250px;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .farm-content {
+            padding: 1.5rem;
+        }
+
+        /* About Section */
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-top: 2rem;
+            align-items: center;
+        }
+
+        .founder-image {
+            width: 100%;
+            height: 400px;
+            background: url('images/ABP_3489.JPG') center/cover;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        /* Contact Form */
+        .contact-form {
+            background: white;
+            padding: 3rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-top: 2rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #2d5016;
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #4CAF50;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        /* Footer */
+        .footer {
+            background: #8ecc1f;
+            color: white;
+            padding: 3rem 0 1rem;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid #4a7c59;
+            color:white;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
+            }
+
+            .about-content {
+                grid-template-columns: 1fr;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            color: #2d5016;
+            margin-bottom: 1rem;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 1.2rem;
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .carousel-dots {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            z-index: 20;
+        }
+
+        .dot {
+            height: 12px;
+            width: 12px;
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .dot.active {
+            background-color: #ffffff;
+        }
+
+
+        body,
+        .section,
+        div,
+        nav,
+        button,
+        a {
+            user-select: none;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            -moz-user-select: none;
+            caret-color: transparent;
+        }
+
+        input,
+        textarea {
+        user-select: text;
+        caret-color: auto;
+       }
+
+
+        /* Smooth Scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            
+            <a onclick="showSection('home')" class="logo"><img src="images/Kalamkar-Exotics-Logo-2.png" style="height: 80px; width: 260px;"></a>
+            <ul class="nav-links">
+                <li><a onclick="showSection('home')">Home</a></li>
+                <li><a onclick="showSection('ordering')">Ordering</a></li>
+                <li><a onclick="showSection('farms')">Farms</a></li>
+                <li><a onclick="showSection('about')">About Us</a></li>
+                <li><a onclick="showSection('contact')">Contact Us</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="content">
+        <!-- Home Section -->
+        <section id="home" class="section active">
+            <div class="container">
+                <!-- Hero Carousel -->
+                <div class="hero">
+                    <div class="carousel">
+                        <div class="carousel-item active">
+                            <div class="hero-content">
+                                <h1>Premium Fresh Vegetables</h1>
+                                <p>Supplying the finest quality vegetables to hotels, cafes, and restaurants in Pune for the last 22 Years</p>
+                                <a href="#" class="cta-button" onclick="showSection('ordering')">Start Ordering</a>
+                            </div>
+                        </div>
+                        <div class="carousel-item">
+                            <div class="hero-content">
+                                <h1>Farm to Table Excellence</h1>
+                                <p>Direct from our organic farms to your kitchen</p>
+                                <a href="#" class="cta-button" onclick="showSection('farms')">Visit Our Farms</a>
+                            </div>
+                        </div>
+                        <div class="carousel-item">
+                            <div class="hero-content">
+                                <h1>Reliable Supply Partners</h1>
+                                <p>Consistent quality and on-time delivery for your business</p>
+                                <a href="#" class="cta-button" onclick="showSection('contact')">Get In Touch</a>
+                            </div>
+                        </div>
+                        <div class="carousel-dots">
+                            <span class="dot active" onclick="goToSlide(0)"></span>
+                            <span class="dot" onclick="goToSlide(1)"></span>
+                            <span class="dot" onclick="goToSlide(2)"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Features Section -->
+                <div class="features">
+                    <h2 class="section-title">Why Choose Kalamkar Exotics?</h2>
+                    <div class="features-grid">
+                        <div class="feature-card">
+                            <div class="feature-icon">🥬</div>
+                            <h3>Premium Quality</h3>
+                            <p>Hand-picked vegetables ensuring the highest quality standards for your culinary needs.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">🚚</div>
+                            <h3>Reliable Delivery</h3>
+                            <p>On-time delivery, every time — because your kitchen can't wait.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">🌱</div>
+                            <h3>Organic Farming</h3>
+                            <p>Sustainable farming practices with minimal use of chemicals and pesticides.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">📞</div>
+                            <h3>24/7 Support</h3>
+                            <p>Dedicated customer service team available round the clock for your business needs.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Ordering Section -->
+        <section id="ordering" class="section">
+            <div class="container">
+                <h2 class="section-title">Easy Online Ordering</h2>
+                <p class="section-subtitle">Place your orders seamlessly through our dedicated ordering platform</p>
+                
+                <div style="text-align: center; padding: 4rem 0;">
+                    <div style="background: white; padding: 3rem; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); max-width: 600px; margin: 0 auto;">
+                        <h3 style="color: #2d5016; margin-bottom: 1rem;">Ready to Place Your Order?</h3>
+                        <p style="margin-bottom: 2rem; color: #666;">Access our comprehensive ordering system with pricing, and delivery scheduling.</p>
+                        <a href="https://kalamkarexotics.netlify.app" target="_blank" class="cta-button" style="font-size: 1.2rem; padding: 20px 40px;">
+                            Go to Ordering Portal →
+                        </a>
+                    </div>
+                </div>
+
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <h4 style="color: #2d5016; margin-bottom: 1rem;">🛒 Easy Ordering</h4>
+                        <p>Browse our catalog, select quantities, and place orders in just a few clicks.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4 style="color: #2d5016; margin-bottom: 1rem;">📅 Schedule Deliveries</h4>
+                        <p>Plan your deliveries in advance with flexible scheduling options.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h4 style="color: #2d5016; margin-bottom: 1rem;">💰 Competetive Pricing</h4>
+                        <p>Real-time ordering with volume discounts and special rates for regular customers.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Farms Section -->
+        <section id="farms" class="section">
+            <div class="container">
+                <h2 class="section-title">Our Farms & Methodologies</h2>
+                <p class="section-subtitle">Explore our sustainable farming practices and state-of-the-art agricultural facilities</p>
+                
+                <div class="farms-grid">
+                    <div class="farm-card">
+                        <div class="farm-image" style="background-image: url('images/Farm4.jpeg');"></div>
+                        <div class="farm-content">
+                            <h3 style="color: #2d5016; margin-bottom: 1rem;">Organic Cultivation</h3>
+                            <p>Our primary farm spans 50 acres of land where we grow leafy greens, herbs, and seasonal vegetables using natural composting and crop rotation methods.</p>
+                        </div>
+                    </div>
+                    <div class="farm-card">
+                        <div class="farm-image" style="background-image: url('images/Farm6.jpeg');"></div>
+                        <div class="farm-content">
+                            <h3 style="color: #2d5016; margin-bottom: 1rem;">PolyHouse Systems</h3>
+                            <p>State-of-the-art PolyHouse facilities enable year-round production of premium quality cucumbers and peppers with 90% less water usage.</p>
+                        </div>
+                    </div>
+                    <div class="farm-card">
+                        <div class="farm-image" style="background-image: url('images/Farm1.jpeg');"></div>
+                        <div class="farm-content">
+                            <h3 style="color: #2d5016; margin-bottom: 1rem;">Precision Agriculture</h3>
+                            <p>Using our years if experience, we cultivate farms inorder to gain maximum yeid through minimum chemicals.</p>
+                        </div>
+                    </div>
+                    <div class="farm-card">
+                        <div class="farm-image" style="background-image: url('images/Farm5.jpeg');"></div>
+                        <div class="farm-content">
+                            <h3 style="color: #2d5016; margin-bottom: 1rem;">Integrated Pest Management</h3>
+                            <p>We employ beneficial insects, companion planting, and targeted biological controls to maintain healthy crops without excessive use of harmful chemical pesticides.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Us Section -->
+        <section id="about" class="section">
+            <div class="container">
+                <h2 class="section-title">About Kalamkar Exotics</h2>
+                <p class="section-subtitle">Learn about our founder's vision and our company's journey</p>
+                
+                <div class="about-content">
+                    <div class="founder-image"></div>
+                    <div>
+                        <h3 style="color: #2d5016; font-size: 2rem; margin-bottom: 1rem;">Our Founder</h3>
+                        <p style="margin-bottom: 1.5rem; font-size: 1.1rem; line-height: 1.8;">
+                            <strong>Mr.Sharad Kalamkar</strong> founded Kalamkar Exotics in 2003 with a simple vision: to bridge the gap between farming and the hospitality industry. With over 15 years of experience in agriculture, he recognized the need for a reliable, quality-focused vegetable supplier.
+                        </p>
+                        
+                        <h4 style="color: #2d5016; margin-bottom: 1rem;">Our Journey</h4>
+                        <p style="margin-bottom: 1rem; line-height: 1.8;">
+                            What started as a small family farm has grown into a comprehensive vegetable supply network serving over 100 restaurants, hotels, and cafes across the region. Our commitment to quality, sustainability, and customer service has been the cornerstone of our success.
+                        </p>
+                        
+                        <h4 style="color: #2d5016; margin-bottom: 1rem;">Our Mission</h4>
+                        <p style="line-height: 1.8;">
+                            We're dedicated to providing the freshest, highest-quality vegetables while supporting sustainable farming practices and building lasting partnerships with our clients. Every harvest is a step towards a more sustainable food system.
+                        </p>
+                    </div>
+                </div>
+
+                <div style="background: linear-gradient(135deg, #e8f5e8, #f0f8f0); padding: 3rem; border-radius: 15px; margin-top: 3rem; text-align: center;">
+                    <h3 style="color: #2d5016; margin-bottom: 2rem;">Our Milestones</h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem;">
+                        <div>
+                            <h4 style="color: #4CAF50; font-size: 2rem;">2003</h4>
+                            <p>Founded Kalamkar Exotics</p>
+                        </div>
+                        <div>
+                            <h4 style="color: #4CAF50; font-size: 2rem;">2018</h4>
+                            <p>Hydroponic Expansion</p>
+                        </div>
+                        <div>
+                            <h4 style="color: #4CAF50; font-size: 2rem;">2021</h4>
+                            <p>Started supplying to E-Commerce Giants</p>
+                        </div>
+                        <div>
+                            <h4 style="color: #4CAF50; font-size: 2rem;">2025</h4>
+                            <p>100+ Happy Clients</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Us Section -->
+        <section id="contact" class="section">
+            <div class="container">
+                <h2 class="section-title">Get In Touch</h2>
+                <p class="section-subtitle">We'd love to hear from you. Send us your feedback or inquiries!</p>
+                
+                <form class="contact-form" onsubmit="handleSubmit(event)">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="name">Full Name *</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email Address *</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="business">Business Name</label>
+                            <input type="text" id="business" name="business">
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" id="phone" name="phone">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="business-type">Business Type</label>
+                        <select id="business-type" name="business-type">
+                            <option value="">Select your business type</option>
+                            <option value="hotel">Hotel</option>
+                            <option value="restaurant">Restaurant</option>
+                            <option value="cafe">Cafe</option>
+                            <option value="catering">Catering Service</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="subject">Subject</label>
+                        <input type="text" id="subject" name="subject">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="message">Message/Feedback *</label>
+                        <textarea id="message" name="message" rows="6" required placeholder="Tell us about your requirements, feedback, or any questions you have..."></textarea>
+                    </div>
+                    
+                    <div style="text-align: center;">
+                        <button type="submit" class="cta-button">Send Message</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Kalamkar Exotics Pvt Ltd.</h3>
+                    <p>Your trusted partner for premium fresh vegetables. From our farms to your kitchen, we ensure quality and freshness in every delivery.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <p><a href="#" onclick="showSection('home')" style="color: white; text-decoration: none;">Home</a></p>
+                    <p><a href="#" onclick="showSection('ordering')" style="color: white; text-decoration: none;">Ordering</a></p>
+                    <p><a href="#" onclick="showSection('farms')" style="color: white; text-decoration: none;">Our Farms</a></p>
+                    <p><a href="#" onclick="showSection('about')" style="color: white; text-decoration: none;">About Us</a></p>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Info</h3>
+                    <p>📧 kalamkarexotics@gmail.com</p>
+                    <p>📞 +91 9511932429</p>
+                    <p>📍 Awhalwadi, Pune-411014</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Business Hours</h3>
+                    <p>Wednesday - Monday: 6:00 AM - 6:00 PM</p>
+                    <p>Tuesday: Closed</p>
+                    <p style="margin-top: 1rem; color: white;"><strong>24/7 Emergency Orders</strong></p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Kalamkar Exotics Pvt Ltd. All rights reserved. | Committed to sustainable farming and quality supply.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Navigation functionality
+        function showSection(sectionId) {
+            // Hide all sections
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Show selected section
+            document.getElementById(sectionId).classList.add('active');
+        }
+
+
+        //carpousel functionality
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.carousel-item');
+        const dots = document.querySelectorAll('.dot');
+
+        let slideInterval = setInterval(nextSlide, 3000);
+
+        function goToSlide(index) {
+           slides.forEach((slide, i) => {
+              slide.classList.remove('active');
+              dots[i].classList.remove('active');
+            });
+
+            slides[index].classList.add('active');
+            dots[index].classList.add('active');
+            currentSlide = index;
+
+            // Reset the timer
+            clearInterval(slideInterval);
+            slideInterval = setInterval(nextSlide, 3000);
+        }
+
+        function nextSlide() {
+           let nextIndex = (currentSlide + 1) % slides.length;
+           goToSlide(nextIndex); // This already resets the timer
+        }
+
+
+        // Form submission
+        function handleSubmit(event) {
+            event.preventDefault();
+            
+            // Get form data
+            const formData = new FormData(event.target);
+            const data = Object.fromEntries(formData);
+            
+            // Simple validation
+            if (!data.name || !data.email || !data.message) {
+                alert('Please fill in all required fields.');
+                return;
+            }
+            
+            // Simulate form submission
+            alert('Thank you for your message! We will get back to you within 24 hours.');
+            event.target.reset();
+        }
+
+        // Smooth scrolling and animations
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add entrance animations to feature cards
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+            
+            // Observe all cards
+            document.querySelectorAll('.feature-card, .farm-card').forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = 'opacity 0.9s ease, transform 0.9s ease';
+                observer.observe(card);
+            });
+        });
+    </script>
+</body>
+</html>
